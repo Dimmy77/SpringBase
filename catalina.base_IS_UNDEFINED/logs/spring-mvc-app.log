@@ -1,0 +1,35 @@
+2021-02-07 20:43:37,401 INFO [background-preinit] o.h.v.i.u.Version [Version.java:21] HV000001: Hibernate Validator 6.1.7.Final
+2021-02-07 20:43:37,579 INFO [main] r.g.Lesson04SpringBootApplication [StartupInfoLogger.java:55] Starting Lesson04SpringBootApplication v0.0.1-SNAPSHOT using Java 1.8.0_251 on DimmyPC with PID 10036 (C:\Java\geek-spring-part-one-01-25\lesson-04-spring-boot\target\lesson-04-spring-boot-0.0.1-SNAPSHOT.jar started by Dimmy in C:\Java\geek-spring-part-one-01-25)
+2021-02-07 20:43:37,581 INFO [main] r.g.Lesson04SpringBootApplication [SpringApplication.java:660] No active profile set, falling back to default profiles: default
+2021-02-07 20:43:43,817 INFO [main] o.s.b.w.e.t.TomcatWebServer [TomcatWebServer.java:108] Tomcat initialized with port(s): 8080 (http)
+2021-02-07 20:43:43,852 INFO [main] o.a.c.h.Http11NioProtocol [DirectJDKLog.java:173] Initializing ProtocolHandler ["http-nio-8080"]
+2021-02-07 20:43:43,854 INFO [main] o.a.c.c.StandardService [DirectJDKLog.java:173] Starting service [Tomcat]
+2021-02-07 20:43:43,855 INFO [main] o.a.c.c.StandardEngine [DirectJDKLog.java:173] Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-02-07 20:43:44,076 INFO [main] o.a.c.c.C.[.[.[/spring-mvc-app] [DirectJDKLog.java:173] Initializing Spring embedded WebApplicationContext
+2021-02-07 20:43:44,077 INFO [main] o.s.b.w.s.c.ServletWebServerApplicationContext [ServletWebServerApplicationContext.java:289] Root WebApplicationContext: initialization completed in 6120 ms
+2021-02-07 20:43:45,518 INFO [main] o.s.s.c.ThreadPoolTaskExecutor [ExecutorConfigurationSupport.java:181] Initializing ExecutorService 'applicationTaskExecutor'
+2021-02-07 20:43:46,676 INFO [main] o.s.b.a.e.w.EndpointLinksResolver [EndpointLinksResolver.java:58] Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-02-07 20:43:46,756 INFO [main] o.a.c.h.Http11NioProtocol [DirectJDKLog.java:173] Starting ProtocolHandler ["http-nio-8080"]
+2021-02-07 20:43:46,844 WARN [main] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext [AbstractApplicationContext.java:596] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8080 is already in use
+2021-02-07 20:43:46,846 INFO [main] o.s.s.c.ThreadPoolTaskExecutor [ExecutorConfigurationSupport.java:218] Shutting down ExecutorService 'applicationTaskExecutor'
+2021-02-07 20:43:46,860 INFO [main] o.a.c.h.Http11NioProtocol [DirectJDKLog.java:173] Pausing ProtocolHandler ["http-nio-8080"]
+2021-02-07 20:43:46,861 INFO [main] o.a.c.c.StandardService [DirectJDKLog.java:173] Stopping service [Tomcat]
+2021-02-07 20:43:46,878 INFO [main] o.a.c.h.Http11NioProtocol [DirectJDKLog.java:173] Stopping ProtocolHandler ["http-nio-8080"]
+2021-02-07 20:43:46,879 INFO [main] o.a.c.h.Http11NioProtocol [DirectJDKLog.java:173] Destroying ProtocolHandler ["http-nio-8080"]
+2021-02-07 20:43:46,918 INFO [main] o.s.b.a.l.ConditionEvaluationReportLoggingListener [ConditionEvaluationReportLoggingListener.java:136] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2021-02-07 20:43:47,010 ERROR [main] o.s.b.d.LoggingFailureAnalysisReporter [LoggingFailureAnalysisReporter.java:40] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
