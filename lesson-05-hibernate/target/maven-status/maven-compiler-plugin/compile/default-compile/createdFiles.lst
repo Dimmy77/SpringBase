@@ -1,0 +1,6 @@
+ru\geekbrain\product\ProductRepository.class
+ru\geekbrain\Application.class
+ru\geekbrain\product\Product.class
+ru\geekbrain\persist\User.class
+ru\geekbrain\Main.class
+ru\geekbrain\persist\UserRepository.class
