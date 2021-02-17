@@ -29,20 +29,23 @@ public class LineOfPurchase {
     private Product product;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private Purchase purchase;
 
 
     public LineOfPurchase(){
+        priceOfPurchase = new BigDecimal(0.1);
         priceOfPurchase.setScale(2, ROUND_HALF_DOWN);
+
     }
 
     public LineOfPurchase(Product product, Integer qty){
         this.product= product;
         this.qty=qty;
         this.price = product.getPrice();
-        priceOfPurchase.setScale(2, ROUND_HALF_DOWN);
+        price.setScale(2,ROUND_HALF_DOWN);
         priceOfPurchase=price.multiply(new BigDecimal(qty));
+        priceOfPurchase.setScale(2, ROUND_HALF_DOWN);
     }
 
     public Long getId() {
