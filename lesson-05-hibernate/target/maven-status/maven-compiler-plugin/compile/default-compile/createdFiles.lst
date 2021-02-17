@@ -1,6 +1,10 @@
+ru\geekbrain\purchase\LineOfPurchase.class
+ru\geekbrain\persist\Contact.class
+ru\geekbrain\purchase\Purchase.class
+ru\geekbrain\persist\User.class
+ru\geekbrain\persist\UserRepository.class
+ru\geekbrain\Lesson6.class
 ru\geekbrain\product\ProductRepository.class
 ru\geekbrain\Application.class
 ru\geekbrain\product\Product.class
-ru\geekbrain\persist\User.class
 ru\geekbrain\Main.class
-ru\geekbrain\persist\UserRepository.class

@@ -1,10 +1,11 @@
 package ru.geekbrain.persist;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import sun.util.resources.ar.CurrencyNames_ar_IQ;
+import ru.geekbrain.purchase.LineOfPurchase;
+import ru.geekbrain.purchase.Purchase;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user_tbl")
@@ -18,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(unique = true, nullable = false, columnDefinition = "default 'user_id'")
-    private Long id;
+    private Long user_id;
 
     @Column(length = 16, unique = true, nullable = false)//, columnDefinition = "default 'username_fld'")
     private String username;
@@ -41,6 +42,12 @@ public class User {
     @Column//(columnDefinition = "default 'isBlock_fld'")
     private Boolean isBlock;
 
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<Contact> contactList;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<Purchase> purchaseList;
+
     public User() {
         isBlock=false;
         createDate = new Date(System.currentTimeMillis());
@@ -61,11 +68,11 @@ public class User {
     }
 
     public Long getId() {
-        return id;
+        return user_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.user_id = id;
     }
 
     public String getUsername() {
@@ -127,7 +134,7 @@ public class User {
     @Override
     public String toString(){
         return "\nUser{"+
-                "id="+id+
+                "id="+user_id+
                 ", username='"+username+ '\''+
                 ", password='"+password+ '\''+
                 ", email='"+email+ '\''+
@@ -135,5 +142,21 @@ public class User {
                 ", is block='"+isBlock+ '\''+
                 ", date block='"+blockDate+ '\''+
                 '}';
+    }
+
+    public List<Contact> getContactList() {
+        return contactList;
+    }
+
+    public void setContactList(List<Contact> contactList) {
+        this.contactList = contactList;
+    }
+
+    public List<Purchase> getPurchaseList() {
+        return purchaseList;
+    }
+
+    public void setPurchaseList(List<Purchase> purchaseList) {
+        this.purchaseList = purchaseList;
     }
 }

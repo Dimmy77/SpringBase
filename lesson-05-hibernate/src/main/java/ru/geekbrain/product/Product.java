@@ -1,7 +1,13 @@
 package ru.geekbrain.product;
 
+import ru.geekbrain.purchase.LineOfPurchase;
+
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
 
 @Entity
 @Table(name = "product_tbl")
@@ -13,7 +19,7 @@ import java.util.Date;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long product_id;
 
     @Column (length = 45, nullable = false, unique = true)
     private String productName;
@@ -22,7 +28,7 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Float price;
+    private BigDecimal price;
 
     @Column(nullable = false)
     private Boolean isAvailable;
@@ -33,22 +39,28 @@ public class Product {
     @Column
     private Date blockDate;
 
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<LineOfPurchase> lineOfPurchaseList;
+
     public Product(){
-        this.price=0.1F;
+        this.price= new BigDecimal(0.1);
+        price.setScale(2, ROUND_HALF_DOWN);
         createData = new Date(System.currentTimeMillis());
         isAvailable = true;
     }
 
     public Product(String productName){
         this.productName=productName;
-        price=0.1F;
+        this.price= new BigDecimal(0.1);
+        price.setScale(2, ROUND_HALF_DOWN);
         description="";
         createData = new Date(System.currentTimeMillis());
         isAvailable = true;
     }
 
-    public Product(String productName, float price){
+    public Product(String productName, BigDecimal price){
         this.productName=productName;
+        price.setScale(2, ROUND_HALF_DOWN);
         this.price = price;
         description="";
         createData = new Date(System.currentTimeMillis());
@@ -56,11 +68,11 @@ public class Product {
     }
 
     public Long getId() {
-        return id;
+        return product_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.product_id = id;
     }
 
     public String getProductName() {
@@ -79,11 +91,11 @@ public class Product {
         this.description = description;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -98,7 +110,7 @@ public class Product {
     @Override
     public String toString(){
         return "Product{"+
-                "id="+id+
+                "id="+product_id+
                 ", product name='"+productName+ '\''+
                 ", description='"+description+ '\''+
                 ", price='"+price+ '\''+
@@ -122,5 +134,13 @@ public class Product {
 
     public Date getBlockDate() {
         return blockDate;
+    }
+
+    public List<LineOfPurchase> getLineOfPurchaseList() {
+        return lineOfPurchaseList;
+    }
+
+    public void setLineOfPurchaseList(List<LineOfPurchase> lineOfPurchaseList) {
+        this.lineOfPurchaseList = lineOfPurchaseList;
     }
 }

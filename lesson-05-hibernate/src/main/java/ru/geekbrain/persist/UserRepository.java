@@ -9,31 +9,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 
 public class UserRepository {
 
     private final EntityManagerFactory emFactory;
 
-    public UserRepository(EntityManagerFactory emFactory){
-        this.emFactory=emFactory;
+    public UserRepository(EntityManagerFactory emFactory) {
+        this.emFactory = emFactory;
     }
 
     public List<User> findAll() {
         EntityManager em = emFactory.createEntityManager();
-        List<User> userList = em.createQuery("from User", User.class)
-                .getResultList();
-        em.close();
-        return new ArrayList<>(userList);
+        try {
+            return em.createQuery("from User", User.class)
+                    .getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public User findById(long id) {
         EntityManager em = emFactory.createEntityManager();
-        Object user = em.createNamedQuery("userById")
-                .setParameter("id", id)
-                .getSingleResult();
-        em.close();
-        return User.class.cast(user);
+        try {
+            return em.find(User.class, id);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public User findByName(String userName) {
@@ -42,51 +50,90 @@ public class UserRepository {
                 .setParameter("username", userName)
                 .getSingleResult();
         em.close();
+
         return User.class.cast(user);
     }
 
     public void insert(User user) {
-        if(user.getUsername().equals("") || user.getPassword().equals("") || user.getEmail().equals("")) return;
+        if (user.getUsername().equals("") || user.getPassword().equals("") || user.getEmail().equals("")) return;
 
         EntityManager em = emFactory.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(user);
-        em.getTransaction().commit();
-        em.close();
+
+        try {
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+        } catch (Exception exception) {
+            em.getTransaction().rollback();
+        } finally {
+            if (em != null) {
+
+                em.close();
+            }
+        }
     }
 
     public void update(User user) {
-        if(user.getUsername().equals("") || user.getEmail().equals("") ||
+        if (user.getUsername().equals("") || user.getEmail().equals("") ||
                 !user.getPassword().equals(user.getMatchingPassword()) || user.getEmail().equals("")) return;
 
         EntityManager em = emFactory.createEntityManager();
-        User tmpUser = User.class.cast(em.createNamedQuery("userById")
-                .setParameter("id", user.getId())
-                .getSingleResult());
-
-        if (tmpUser != null) {
+        try {
             em.getTransaction().begin();
-            tmpUser.setUsername(user.getUsername());
-            if (!user.getIsBlock()) {
-                tmpUser.setIsBlock(user.getIsBlock());
-                tmpUser.setBlockDate(user.getBlockDate());
+            em.merge(user);
+            em.getTransaction().commit();
+        } catch (Exception exception) {
+            em.getTransaction().rollback();
+        } finally {
+            if (em != null) {
+
+                em.close();
             }
-            tmpUser.setPassword(user.getPassword());
-            tmpUser.setMatchingPassword(user.getMatchingPassword());
-            tmpUser.setEmail(user.getEmail());
         }
-        em.getTransaction().commit();
-        em.close();
     }
 
     public void delete(long id) {
         EntityManager em = emFactory.createEntityManager();
-        em.getTransaction().begin();
-        em.createQuery("delete from User where id=:id")
-                .setParameter("id", id)
-                .executeUpdate();
-        em.getTransaction().commit();
-        em.close();
+        try {
+            em.getTransaction().begin();
+            User user1 = em.find(User.class, id);
+            if (user1 != null) {
+                em.remove(user1);
+            }
+            em.getTransaction().commit();
+        } catch (Exception exception) {
+            em.getTransaction().rollback();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    private <R> R executeForEntityManager(Function<EntityManager, R> function){
+        EntityManager em= emFactory.createEntityManager();
+        try{
+            return function.apply(em);
+        }finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    private void executeInTransaction(Consumer<EntityManager> consumer){
+        EntityManager em = emFactory.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            consumer.accept(em);
+            em.getTransaction().commit();
+        }catch (Exception exception){
+            em.getTransaction().rollback();
+        }finally {
+            if(em != null){
+                em.close();
+            }
+        }
     }
 
 }
